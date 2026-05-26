@@ -1,4 +1,4 @@
 /.venv/
-/workingfiles/
+/workingfiles/*
 /.idea/
 /scripts/testing.py
