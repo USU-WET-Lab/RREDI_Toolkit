@@ -9,6 +9,8 @@
 # Updated January 2024 - Additional operational details and streamline of input file names. Include DiurnalFlaggingFunction.py file.
 # Updated August 2025 - RREDI V2 release. RREDI code updated to identify better Step 3 runoff start and end using a large sample of watersheds ~250. Additional documentation (including this readme.txt) included and updated including descriptive figures. Example inputs and outputs from updated code included. 
   https://hydroshare.org/resource/c0b8d3aee3434df88adc1f495b3121f6/
+# Updated May 2026 - Github repository created
+# Updated 26May2026 - Updates to RREDI scripts inclduing steps 1,2_3, and 4. Updates made to imporove rainfall-runoff event pairing. 
 
 # Contact
 	Haley Canham - haley.canham@usu.edu
@@ -57,7 +59,7 @@ including time to peak, response time, duration, volume, and percent rise (Step 
 		DefaultOutputsFolder -> Folder (empty) where script outputs will be written to.
 		
 	RREDI_Scripts_V2 -> RREDI toolkit version 2 released Sep2025. Folder contains all RREDI toolkit code (python)
-		LibraryRequirements.py -> RREDI toolkit V2 virtual environment python library requirements.
+		requirements.py -> RREDI toolkit V2 virtual environment python library requirements.
 		StormGenerator.py -> Script to create storms using a specified storm gap from a precipitation record.
 		RREDI_dataPrep.py -> Script for preparing streamflow and storm input files for RREDI. Primary function is ensuring matching and overlapping 
 			data period of records.
