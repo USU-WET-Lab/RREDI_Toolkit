@@ -21,19 +21,19 @@ I_int = 60 # storm intensity interval, units = minutes
 tip = 0.1 # rainfall magnitude in each tip, unit = mm, #0.1mm for AORC, 0.245mm (0.01in) for tipping RG
 
 # read rain gage timestamp tip file
-data_filename = '{}\\ExampleFiles\\Precipitation_data.csv'.format(workingPath)
+data_filename = '{}\\workingfiles\\Precipitation_data.csv'.format(workingPath)
 data = pd.read_csv(data_filename, header=None)
 
 # make storm output files
-filepath_storms = '{}\\ExampleFiles\\DefaultOutputsFolder\\Storms'.format(workingPath)
+filepath_storms = '{}\\workingfiles\\StormGenerator\\Storms'.format(workingPath)
 os.mkdir(filepath_storms)
 
 for stormgap in stormgaps:
     print('Start ', stormgap, ' at ', datetime.now())
 
-    filepath_mag = '{}\\ExampleFiles\\DefaultOutputsFolder\\Storms\\Magnitude'.format(workingPath)
+    filepath_mag = '{}\\workingfiles\\StormGenerator\\Storms\\Magnitude'.format(workingPath)
     os.mkdir(filepath_mag)
-    filepath_int = '{}\\ExampleFiles\\DefaultOutputsFolder\\Storms\\Intensity'.format(workingPath)
+    filepath_int = '{}\\workingfiles\\StormGenerator\\Storms\\Intensity'.format(workingPath)
     os.mkdir(filepath_int)
 
     # create timestamp of tips
@@ -210,4 +210,4 @@ for stormgap in stormgaps:
     print(storms)
 
     # write .csv file
-    storms.to_csv('{}\\ExampleFiles\\DefaultOutputsFolder\\Storms\\StormGenerator_output.csv'.format(workingPath), index = False)
+    storms.to_csv('{}\\workingfiles\\StormGenerator\\StormGenerator_output.csv'.format(workingPath), index = False)

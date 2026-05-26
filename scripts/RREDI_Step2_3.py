@@ -19,7 +19,7 @@ melt_start = 5
 summer_start = 5
 
 # Call readfiles function
-stormspath = '{}\\ExampleFiles\\StormGenerator\\StormGenerator_output.csv'.format(workingPath)
+stormspath = '{}\\workingfiles\\StormGenerator\\StormGenerator_output.csv'.format(workingPath)
 storm_summary = pd.read_csv(stormspath, parse_dates=['Start', 'End'], index_col = ['StormID'])
 
 flow_15min = read_flow_file(workingPath)
@@ -31,7 +31,7 @@ Fdata_hourly = hourly_flow(flow_15min)
 # print(Fdata_hourly)
 
 ## Read in RREDI_Step1_ouput.csv file
-events_path = '{}\\ExampleFiles\\RREDI_Step1\\RREDI_Step1_output.csv'.format(workingPath)
+events_path = '{}\\workingfiles\\RREDI_Step1\\RREDI_Step1_output.csv'.format(workingPath)
 events_csv = pd.read_csv(events_path)
 event_prams = events_csv['wy'].tolist()
 

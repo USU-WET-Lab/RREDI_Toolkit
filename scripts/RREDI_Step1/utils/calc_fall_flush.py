@@ -269,7 +269,7 @@ def calc_fall_flush_timings_durations(flow_matrix, summer_timings, class_number,
             yearly_rightmag.append(flow_data[i])
         rightmag.append(yearly_rightmag)
 
-        print('made it to calling Precip!')
+        # print('made it to calling Precip!')
 
 
 
@@ -303,8 +303,12 @@ def calc_fall_flush_timings_durations(flow_matrix, summer_timings, class_number,
         #find the associated flow event for each storm
         # print(column_number)
         count3 = 0
-        for pdate in wystart_year:
-            # print('pdate', pdate)
+        # for pdate in wystart_year:
+        for i in range(0,len(wystart_year)):
+            pdate = wystart_year[i]
+            pdate_end = wyend_year[i]
+            # pdate_end = wyend_year[pdate]
+            # print('pdate', pdate, 'pdate_end', pdate_end)
             count4 = 0
             for fdate in left:
                 # print('fdate', fdate)
@@ -317,7 +321,10 @@ def calc_fall_flush_timings_durations(flow_matrix, summer_timings, class_number,
                 peak_date = F_peak_dates[column_number][count4]
                 peakmag = mags[column_number][count4]
                 # print('fdate:', fdate, 'count4:', count4, 'peakdate:', peak_date)
-                if bool(pdate == fdate or pdate+1 == fdate or (pdate > fdate and pdate <= peak_date)): # keep flow date if equal or one day prior to pdate and equal to or less than peak flow date
+                # if bool(pdate == fdate or pdate+1 == fdate or (pdate > fdate and pdate <= peak_date)): # keep flow date if equal or one day prior to pdate and equal to or less than peak flow date
+                if bool(pdate == fdate or pdate + 1 == fdate or (pdate > fdate and pdate <= peak_date+1) or
+                        pdate_end == fdate or pdate_end +1 == fdate or (pdate_end > fdate and pdate_end <= peak_date+1)):  # keep flow date if equal or one day prior to pdate and equal to or less than peak flow date
+
                     yearly_finalFdates.append(fdate)
                     yearly_finalP_Sdates.append(pdate)
                     yearly_p_index.append(count3)

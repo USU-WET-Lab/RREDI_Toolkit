@@ -16,9 +16,9 @@ workingPath = os.getcwd()
 print(workingPath)
 
 ## Read in all data files
-Q_daily_filename = '{}\\ExampleFiles\\Streamflow_daily_data.csv'.format(workingPath)
-Q_instant_filename = '{}\\ExampleFiles\\Streamflow_instant_data.csv'.format(workingPath)
-storms_filename = '{}\\ExampleFiles\\StormGenerator\\StormGenerator_output.csv'.format(workingPath)
+Q_daily_filename = '{}\\workingfiles\\Streamflow_daily_data.csv'.format(workingPath)
+Q_instant_filename = '{}\\workingfiles\\Streamflow_instant_data.csv'.format(workingPath)
+storms_filename = '{}\\workingfiles\\StormGenerator\\StormGenerator_output.csv'.format(workingPath)
 
 Q_daily = pd.read_csv(Q_daily_filename , parse_dates= ['date'])
 Q_instant = pd.read_csv(Q_instant_filename, parse_dates= ['date'])
@@ -90,6 +90,6 @@ storms['Start'] = storm_dates_start
 storms['End'] = storm_dates_end
 
 ## write PreProcessing .csv files
-Q_daily.to_csv('{}\\ExampleFiles\\DefaultOutputsFolder\\Q_D_PreProcessed.csv'.format(workingPath), index = False)
-Q_instant.to_csv('{}\\ExampleFiles\\DefaultOutputsFolder\\Q_I_PreProcessed.csv'.format(workingPath), index = False)
-storms.to_csv('{}\\ExampleFiles\\DefaultOutputsFolder\\P_storms_PreProcessed.csv'.format(workingPath), index = False)
+Q_daily.to_csv('{}\\workingfiles\\RREDI_PreProcessing\\Q_D_PreProcessed.csv'.format(workingPath), index = False)
+Q_instant.to_csv('{}\\workingfiles\\RREDI_PreProcessing\\Q_I_PreProcessed.csv'.format(workingPath), index = False)
+storms.to_csv('{}\\workingfiles\\RREDI_PreProcessing\\P_storms_PreProcessed.csv'.format(workingPath), index = False)

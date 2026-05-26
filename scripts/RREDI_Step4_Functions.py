@@ -16,7 +16,7 @@ import matplotlib.dates as mdates
 def DiurnalFlag(workingPath, events):
     diurnalflag = []
     # read in flow file
-    flowpath = '{}\\ExampleFiles\\RREDI_PreProcessing\\Q_I_PreProcessed.csv'.format(workingPath)
+    flowpath = '{}\\workingfiles\\RREDI_PreProcessing\\Q_I_PreProcessed.csv'.format(workingPath)
 
     flow = pd.read_csv(flowpath, parse_dates=['date']) #, date_parser=(lambda x: datetime.strptime(x, "%m/%d/%Y %H:%M:%S")))
 
@@ -82,7 +82,7 @@ def DiurnalFlag(workingPath, events):
                 ax.legend()
                 fig.tight_layout()
 
-                plt.savefig('{}\\ExampleFiles\\DefaultOutputsFolder\\Diurnal\\throwaways\\Event_{}.png'.format(workingPath, event))
+                plt.savefig('{}\\workingfiles\\RREDI_Step4\\Diurnal\\throwaways\\Event_{}.png'.format(workingPath, event))
 
                 # plt.show()
                 plt.close(fig)
@@ -103,7 +103,7 @@ def DiurnalFlag(workingPath, events):
 
                 fig.tight_layout()
 
-                plt.savefig('{}\\ExampleFiles\\DefaultOutputsFolder\\Diurnal\\keepers\\Event_{}.png'.format(workingPath, event))
+                plt.savefig('{}\\workingfiles\\RREDI_Step4\\Diurnal\\keepers\\Event_{}.png'.format(workingPath, event))
                 # plt.show()
                 plt.close(fig)
         else:

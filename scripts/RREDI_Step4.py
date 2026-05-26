@@ -11,7 +11,6 @@ from RREDI_Step4_Functions import DiurnalFlag
 import os
 import shutil
 
-
 current_directory = os.getcwd()
 os.chdir('..')
 workingPath = os.getcwd()
@@ -19,7 +18,7 @@ print(workingPath)
 #
 
 #Read in event attributes .csv file
-eventspath = '{}\\ExampleFiles\\RREDI_Step2_3\\RREDI_Step2_3_output.csv'.format(workingPath)
+eventspath = '{}\\workingfiles\\RREDI_Step2_3\\RREDI_Step2_3_output.csv'.format(workingPath)
 
 events = pd.read_csv(eventspath, header = None).T
 events.columns = events.iloc[0]
@@ -52,11 +51,11 @@ events.drop('storm_start_month', axis=1, inplace=True)
 
 
 # file management
-if os.path.isdir('{}\\ExampleFiles\\DefaultOutputsFolder\\Diurnal'.format(workingPath)):
-    shutil.rmtree('{}\\ExampleFiles\\DefaultOutputsFolder\\Diurnal'.format(workingPath))
-os.mkdir('{}\\ExampleFiles\\DefaultOutputsFolder\\Diurnal'.format(workingPath))
-os.mkdir('{}\\ExampleFiles\\DefaultOutputsFolder\\Diurnal\\throwaways'.format(workingPath))
-os.mkdir('{}\\ExampleFiles\\DefaultOutputsFolder\\Diurnal\\keepers'.format(workingPath))
+if os.path.isdir('{}\\workingfiles\\RREDI_Step4\\Diurnal'.format(workingPath)):
+    shutil.rmtree('{}\\workingfiles\\RREDI_Step4\\Diurnal'.format(workingPath))
+os.mkdir('{}\\workingfiles\\RREDI_Step4\\Diurnal'.format(workingPath))
+os.mkdir('{}\\workingfiles\\RREDI_Step4\\Diurnal\\throwaways'.format(workingPath))
+os.mkdir('{}\\workingfiles\\RREDI_Step4\\Diurnal\\keepers'.format(workingPath))
 
 # Filtering and flagging!
 
@@ -85,7 +84,7 @@ events['DiurnalFlag'] = DiurnalFlag_list
 peak_start_flag = [0]*len(events.index)
 for v in range(0,len(events.index)):
     if ((events['FlowStartDate'][v] == events['FlowPeakDate'][v])
-            or (events['FlowStartDate'][v] + timedelta(hours=1) >= events['FlowPeakDate'][v])
+            or (events['FlowStartDate'][v] + timedelta(hours=1) >= events['FlowPeakDate'][v]) and (events.FlowStartMag[v]>=0.8*events.FlowPeakMag[v])
             or ((events['FlowEndMag'][v] >= events['FlowPeakMag'][v]) and (events['FlowPeakMag'][v] != 0))):
         peak_start_flag[v] = 1
 events['PeakStartFlag'] = peak_start_flag
@@ -110,7 +109,7 @@ EndingFlag_percent = round(EndingFlag_sum/len(events.index)*100)
 
 #write.csv for the remaining set of events
 
-filtered.to_csv('{}\\ExampleFiles\\DefaultOutputsFolder\\RREDI_Step4_output.csv'.format(workingPath), index=False)
+filtered.to_csv('{}\\workingfiles\\RREDI_Step4\\RREDI_Step4_output.csv'.format(workingPath), index=False)
 
 # # events write out
 # print('The total number of events found is ', len(events.index))

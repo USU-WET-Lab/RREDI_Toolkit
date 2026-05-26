@@ -1,9 +1,0 @@
-{
-  "apps": [
-    {
-      "name": "eflow-flask-api",
-      "script": "unicorn.sh",
-      "watch": true
-    }
-  ]
-}

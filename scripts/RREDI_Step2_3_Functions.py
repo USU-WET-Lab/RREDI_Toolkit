@@ -15,7 +15,7 @@ import numpy as np
 
 def read_flow_file(workingPath):
 
-    flow_path = '{}\\ExampleFiles\\RREDI_PreProcessing\\Q_I_PreProcessed.csv'.format(workingPath)
+    flow_path = '{}\\workingfiles\\RREDI_PreProcessing\\Q_I_PreProcessed.csv'.format(workingPath)
 
     flow_15min = pd.read_csv(flow_path, parse_dates=['date'])
     #
@@ -77,81 +77,28 @@ def hourly_flow(flow_15min):
     return Fdata_hourly
 
 def wy_num_2_date_v2(wy_number, year):
-    print(wy_number, year)
+    # print('wy_number', wy_number, year)
    # determine if leap year
     if bool((year % 400 == 0) or ((year % 100 != 0) and (year % 4 == 0))):
         # then leap year
         # print('its a leap year!')
-        wy_numbers = list(range(1, 367))
+        wy_numbers = list(range(0, 366))
     else:
         # not leap year
         # print('its not leap year :/')
-        wy_numbers = list(range(1, 366))
-    if wy_number > 92:  # after Dec 31
-        year = year -1 # add a year to make it the water year?
-    base_day = datetime.strptime('10/1/{}'.format(year), '%m/%d/%Y')
-    wy_days = []
-    wy_days.append(base_day)
-    for i in range(len(wy_numbers) - 1):
-        wy_days.append(wy_days[-1] + timedelta(days=1))
-    the_date = wy_days[wy_numbers.index(wy_number)]
-
-    the_date = datetime.strftime(the_date, '%m/%d/%Y')
-
-    return the_date
-
-def wy_num_2_date(wy_number, year):
-    print(wy_number, year)
-    if wy_number <= 92:  # less than or equal to Jan 1
-    # determine if leap year
-        if bool((year % 400 == 0) or ((year % 100 != 0) and (year % 4 == 0))):
-            # then leap year
-            print('its a leap year!')
-            base_day_leap = datetime.strptime('10/1/{}'.format(year), '%m/%d/%Y')
-            wy_numbers_leap = list(range(1, 367))
-            wy_days_leap = []
-            wy_days_leap.append(base_day_leap)
-            for i in range(len(wy_numbers_leap) - 1):
-                wy_days_leap.append(wy_days_leap[-1] + timedelta(days=1))
-            the_date = wy_days_leap[wy_numbers_leap.index(wy_number)]
-        else:
-            # not leap year
-            base_day = datetime.strptime('10/1/{}'.format(year), '%m/%d/%Y')
-            wy_numbers = list(range(1, 366))
-            wy_days = []
-            wy_days.append(base_day)
-            for i in range(len(wy_numbers) - 1):
-                wy_days.append(wy_days[-1] + timedelta(days=1))
-            the_date = wy_days[wy_numbers.index(wy_number)]
-
+        wy_numbers = list(range(0, 365))
+    if wy_number > 91:  # after Dec 31
+        base_year = year -1 # add a year to make it the water year?
     else:
-        year = year - 1
-        print('{} within else statement'.format(year))
-        # determine if leap year
-        if bool((year % 400 == 0) or ((year % 100 != 0) and (year % 4 == 0))):
-            # then leap year
-            print('its a leap year!')
-            base_day_leap = datetime.strptime('10/1/{}'.format(year), '%m/%d/%Y')
-            wy_numbers_leap = list(range(1, 367))
-            wy_days_leap = []
-            wy_days_leap.append(base_day_leap)
-            for i in range(len(wy_numbers_leap) - 1):
-                wy_days_leap.append(wy_days_leap[-1] + timedelta(days=1))
-            the_date = wy_days_leap[wy_numbers_leap.index(wy_number)]
+        base_year = year
+    base_day = datetime.strptime('10/1/{}'.format(base_year), '%m/%d/%Y')
 
-        else:
-            # not leap year
-            base_day = datetime.strptime('10/1/{}'.format(year), '%m/%d/%Y')
-            wy_numbers = list(range(1, 366))
-            wy_days = []
-            wy_days.append(base_day)
-            for i in range(len(wy_numbers) - 1):
-                wy_days.append(wy_days[-1] + timedelta(days=1))
-            the_date = wy_days[wy_numbers.index(wy_number)]
-    the_date = datetime.strftime(the_date, '%m/%d/%Y')
+    the_date = base_day + timedelta(days = wy_number)
+
+    # the_date = datetime.strftime(the_date, '%m/%d/%Y')
+    # print('the date', the_date)
 
     return the_date
-
 
 def end_event(Fpeak_mag, Fpeak_date, Fevent_start_mag, storm_end, flow_ending, falling_thresh, falling_slope, falling, endflags):
     # default to the end of the window, replace with something better if found
@@ -357,6 +304,8 @@ def plot_event(workingPath, flow_15min_chunk, flow_hourly_chunk, intensity_true,
     if len(antecedent_storms.index != 0):
         ax2.bar(antecedent_storms['Start'], antecedent_storms['PeakIntensity'], width = 0.07, alpha = 0.5, color = 'lightblue', label = 'Antecedent Precip')
 
+    # ax.set_yscale('log')
+
     ax.set_ylabel('Flow (cfs)', fontsize=16)
     ax2.set_ylabel("15-min Precip Intensity\n(mm/hr)", fontsize=16)
     plt.gcf().autofmt_xdate()
@@ -370,7 +319,7 @@ def plot_event(workingPath, flow_15min_chunk, flow_hourly_chunk, intensity_true,
     ax.legend(lines, labels, loc='upper left')
     fig.tight_layout()
 
-    plt.savefig('{}\\ExampleFiles\\DefaultOutputsFolder\\wy{}_count{}.png'.format(workingPath, wy_year,count))
+    plt.savefig('{}\\workingfiles\\RREDI_Step2_3\\Plots\\wy{}_count{}.png'.format(workingPath, wy_year,count))
 
     # plt.show()
     plt.close(fig)
@@ -389,9 +338,9 @@ def event_attribution(j, i, workingPath,pair_Pindex, PStormID, precipmag_total_a
     stormIDs_all.append(Id)
 
     # #Read storm ID intensity and magnitude file
-    intensitypath = '{}\\ExampleFiles\\StormGenerator\\Intensity\\intensity_{}.csv'.format(workingPath, Id)
+    intensitypath = '{}\\workingfiles\\StormGenerator\\Intensity\\intensity_{}.csv'.format(workingPath, Id)
     intensitycsv = pd.read_csv(intensitypath)
-    precipmagpath = '{}\\ExampleFiles\\StormGenerator\\Magnitude\\magnitude_{}.csv'.format(workingPath, Id)
+    precipmagpath = '{}\\workingfiles\\StormGenerator\\Magnitude\\magnitude_{}.csv'.format(workingPath, Id)
     precipmagcsv = pd.read_csv(precipmagpath)
 
     ## get storm total magnitude
@@ -468,25 +417,38 @@ def event_attribution(j, i, workingPath,pair_Pindex, PStormID, precipmag_total_a
         antecedent_precip_all.append(antecedent_storms['Magnitude'].sum())
 
     #### FLOW
-    startday_F = pair_startF[i] +1 # in wy numbers, add 1 bc was zero based
+    startday_F = pair_startF[i]  # zero based
     year_start = int(storm_start.strftime('%Y'))
-    if int(storm_end.strftime('%m')) == 12 and startday_F > 92:
+    # print('start day', startday_F, 'start year', year_start)
+    if int(storm_end.strftime('%m')) == 12 and startday_F > 91:
         year_start = year_start + 1
+
 
     Fstart_date = wy_num_2_date_v2(startday_F, year_start) #in date
 
-    if Fstart_date > datetime.strftime(storm_start, '%m/%d/%Y'): #if  the flow start date is after the storm start date
-        # print('modified start date here')
-        Fstart_date = storm_start - timedelta(days= 1) # then correct the flow start date to one day prior to the storm start date
-        Fstart_date = datetime.strftime(Fstart_date, '%m/%d/%Y')
+    # storm_start_date = storm_start.date()
+    # storm_start_date = storm_start.strftime('%Y-%m-%d')
 
-    endday_F = pair_endF[i] +1 # in wy numbers, add 1 bc was zero based
+    print(storm_start, Fstart_date)
+    print(type(storm_start))
+    print(type(Fstart_date))
+
+    if Fstart_date >= storm_start- timedelta(days = 2): #if  the flow start date is after the storm start date
+        Fstart_date = storm_start - timedelta(days=2) # make Fstart_date at least 2 days prior to storm start
+
+
+    endday_F = pair_endF[i]  # zero based
     year_end = int(storm_end.strftime('%Y'))
-    if int(storm_end.strftime('%m')) == 12 and endday_F > 92:
+    if int(storm_end.strftime('%m')) == 12 and endday_F > 91:
         year_end = year_end + 1
 
-    Fend_date = wy_num_2_date_v2(endday_F+1, year_end) # in date
-    print(Fstart_date, Fend_date)
+    Fend_date = wy_num_2_date_v2(endday_F, year_end) # in date
+
+    # storm_end_date = storm_end.date()
+    if Fend_date <= storm_end + timedelta(days=15):
+        Fend_date = storm_end + timedelta(days=15)
+
+    print('flow start', Fstart_date, 'flow end', Fend_date)
 
     # chunk 15-min flow
     flow_15min_chunk = flow_15min.loc[flow_15min['date'].between(Fstart_date, Fend_date)]
@@ -494,8 +456,11 @@ def event_attribution(j, i, workingPath,pair_Pindex, PStormID, precipmag_total_a
     # flow_15min_chunk = flow_15min.loc[flow_15min['datetime'].between(Fstart_date, Fend_date)]
     flow_15min_chunk = flow_15min_chunk.reset_index()
     # print(flow_15min_chunk)
-    flow_15min_afterstorm = flow_15min.loc[flow_15min['date'].between(storm_end, Fend_date)]
-    flow_15min_afterstorm = flow_15min_afterstorm.reset_index()
+    # flow_15min_afterstorm = flow_15min.loc[flow_15min['date'].between(storm_end, Fend_date)]
+    # flow_15min_afterstorm = flow_15min_afterstorm.reset_index()
+    flow_15min_window = flow_15min.loc[flow_15min['date'].between(storm_start-timedelta(minutes = 60), stormend_window)]
+    flow_15min_afterstorm_24 = flow_15min.loc[flow_15min['date'].between(storm_end-timedelta(minutes = 15),stormend_window)]
+    flow_15min_duringstorm =flow_15min.loc[flow_15min['date'].between(storm_start-timedelta(minutes = 60), storm_end)]
 
 
     # chunk hourly flow
@@ -503,18 +468,20 @@ def event_attribution(j, i, workingPath,pair_Pindex, PStormID, precipmag_total_a
     flow_hourly_chunk = flow_hourly_chunk.reset_index()
     flow_hourly_afterstorm = Fdata_hourly.loc[Fdata_hourly['date'].between(storm_end, Fend_date)]
     flow_hourly_afterstorm = flow_hourly_afterstorm.reset_index()
-    flow_hourly_duringstorm = Fdata_hourly.loc[Fdata_hourly['date'].between(storm_start, stormend_window)]
-    flow_hourly_duringstorm = flow_hourly_duringstorm.reset_index()
+    # flow_hourly_duringstorm = Fdata_hourly.loc[Fdata_hourly['date'].between(storm_start, stormend_window)]
+    # flow_hourly_duringstorm = flow_hourly_duringstorm.reset_index()
     # print(storm_start)
     # print(flow_hourly_afterstorm)
 
 
     ## Identify peak 15-min datetime and mag after storm end within 24 hours
-    flow_15min_window = flow_15min.loc[flow_15min['date'].between(storm_start+timedelta(minutes=15), stormend_window)]
-    flow_15min_afterstorm_24 = flow_15min.loc[flow_15min['date'].between(storm_end-timedelta(minutes = 15),stormend_window)]
-    flow_15min_duringstorm =flow_15min.loc[flow_15min['date'].between(storm_start+timedelta(minutes = 15), storm_end)]
+    # flow_15min_window = flow_15min.loc[flow_15min['date'].between(storm_start+timedelta(minutes=15), stormend_window)]
+    # flow_15min_afterstorm_24 = flow_15min.loc[flow_15min['date'].between(storm_end-timedelta(minutes = 15),stormend_window)]
+    # flow_15min_duringstorm =flow_15min.loc[flow_15min['date'].between(storm_start+timedelta(minutes = 15), storm_end)]
 
-    if (len(flow_15min_window) == 0):
+
+    if ((len(flow_15min_window) == 0) or (len(flow_15min_afterstorm_24) == 0) #or (len(flow_15min_afterstorm) == 0)
+            or (len(flow_15min_chunk) == 0) or (storm_start < flow_15min_chunk.date[0])):
         # print('skipped because not in flow window')
         Fpeak_mag_all.append('NAN')
         Fpeak_all.append('NAN')
@@ -525,49 +492,49 @@ def event_attribution(j, i, workingPath,pair_Pindex, PStormID, precipmag_total_a
         endflags.append('NAN')
         seasonflags.append('NAN')
 
-    elif (len(flow_15min_afterstorm_24) == 0):
-        # print('skipped becuase not in after storm window')
-        Fpeak_mag_all.append('NAN')
-        Fpeak_all.append('NAN')
-        Fevent_start_all.append('NAN')
-        Fevent_start_mag_all.append('NAN')
-        Fevent_end_all.append('NAN')
-        Fevent_end_mag_all.append('NAN')
-        endflags.append('NAN')
-        seasonflags.append('NAN')
+    # elif (len(flow_15min_afterstorm_24) == 0):
+    #     # print('skipped becuase not in after storm window')
+    #     Fpeak_mag_all.append('NAN')
+    #     Fpeak_all.append('NAN')
+    #     Fevent_start_all.append('NAN')
+    #     Fevent_start_mag_all.append('NAN')
+    #     Fevent_end_all.append('NAN')
+    #     Fevent_end_mag_all.append('NAN')
+    #     endflags.append('NAN')
+    #     seasonflags.append('NAN')
+    #
+    # elif (len(flow_15min_afterstorm) == 0):
+    #     # print('skipped becuase not in after storm window')
+    #     Fpeak_mag_all.append('NAN')
+    #     Fpeak_all.append('NAN')
+    #     Fevent_start_all.append('NAN')
+    #     Fevent_start_mag_all.append('NAN')
+    #     Fevent_end_all.append('NAN')
+    #     Fevent_end_mag_all.append('NAN')
+    #     endflags.append('NAN')
+    #     seasonflags.append('NAN')
+    #
+    # elif (len(flow_15min_chunk) == 0):
+    #     # print('skipped becuase not in after storm window')
+    #     Fpeak_mag_all.append('NAN')
+    #     Fpeak_all.append('NAN')
+    #     Fevent_start_all.append('NAN')
+    #     Fevent_start_mag_all.append('NAN')
+    #     Fevent_end_all.append('NAN')
+    #     Fevent_end_mag_all.append('NAN')
+    #     endflags.append('NAN')
+    #     seasonflags.append('NAN')
 
-    elif (len(flow_15min_afterstorm) == 0):
-        # print('skipped becuase not in after storm window')
-        Fpeak_mag_all.append('NAN')
-        Fpeak_all.append('NAN')
-        Fevent_start_all.append('NAN')
-        Fevent_start_mag_all.append('NAN')
-        Fevent_end_all.append('NAN')
-        Fevent_end_mag_all.append('NAN')
-        endflags.append('NAN')
-        seasonflags.append('NAN')
-
-    elif (len(flow_15min_chunk) == 0):
-        # print('skipped becuase not in after storm window')
-        Fpeak_mag_all.append('NAN')
-        Fpeak_all.append('NAN')
-        Fevent_start_all.append('NAN')
-        Fevent_start_mag_all.append('NAN')
-        Fevent_end_all.append('NAN')
-        Fevent_end_mag_all.append('NAN')
-        endflags.append('NAN')
-        seasonflags.append('NAN')
-
-    elif storm_start < flow_15min_chunk.date[0]: #if the precip event is prior to the flow_15min_chunk
-        # print('skipped becuase storm event prior to flow window')
-        Fpeak_mag_all.append('NAN')
-        Fpeak_all.append('NAN')
-        Fevent_start_all.append('NAN')
-        Fevent_start_mag_all.append('NAN')
-        Fevent_end_all.append('NAN')
-        Fevent_end_mag_all.append('NAN')
-        endflags.append('NAN')
-        seasonflags.append('NAN')
+    # elif storm_start < flow_15min_chunk.date[0]: #if the precip event is prior to the flow_15min_chunk
+    #     # print('skipped becuase storm event prior to flow window')
+    #     Fpeak_mag_all.append('NAN')
+    #     Fpeak_all.append('NAN')
+    #     Fevent_start_all.append('NAN')
+    #     Fevent_start_mag_all.append('NAN')
+    #     Fevent_end_all.append('NAN')
+    #     Fevent_end_mag_all.append('NAN')
+    #     endflags.append('NAN')
+    #     seasonflags.append('NAN')
 
     else:
         # identify local maxes after storm ends
@@ -614,48 +581,78 @@ def event_attribution(j, i, workingPath,pair_Pindex, PStormID, precipmag_total_a
         print('Peak at: ', Fpeak_date, Fpeak_mag)
 
         ## Identify start 15-min datetime and mag by slope2 (2nd derivative exceeding 0.01)
-        Fevent_start = storm_start + timedelta(minutes=15)
+        Fevent_start = storm_start - timedelta(minutes=60)
         Fevent_start_mag = flow_15min_window['flow'].iloc[0]
         # print(Fevent_start, Fevent_start_mag)
         # print(flow_hourly_duringstorm)
 
         # flow between storm start and peak
-        flow_hourly_prepeak = Fdata_hourly.loc[Fdata_hourly['date'].between(storm_start, Fpeak_date)]
+        flow_hourly_prepeak = Fdata_hourly.loc[Fdata_hourly['date'].between(storm_start - timedelta(minutes = 60), Fpeak_date)]
         flow_hourly_peakpeak = flow_hourly_prepeak.reset_index(inplace=False)
-        flow_15min_prepeak = flow_15min.loc[flow_15min['date'].between(storm_start, Fpeak_date)]
+        flow_15min_prepeak = flow_15min.loc[flow_15min['date'].between(storm_start - timedelta(minutes = 60), Fpeak_date)]
         flow_15min_prepeak = flow_15min_prepeak.reset_index(inplace=False)
 
-        # print(flow_hourly_prepeak)
+        print(flow_hourly_prepeak)
         if len(flow_hourly_prepeak.index) > 0:
             # print(flow_hourly_prepeak)
             # find local min first as the next default
             Fevent_start_min_index = flow_hourly_prepeak['flow'].idxmin()
             Fevent_start = flow_hourly_prepeak['date'][Fevent_start_min_index]
             Fevent_start_mag = flow_hourly_prepeak['flow'].min()
-            # then look through to find changes in slope
-            # print(Fevent_start_min_index, flow_hourly_prepeak.index[-1]+1)
-            for k in range(Fevent_start_min_index,flow_hourly_prepeak.index[-1]+1):
-                # else look for when slope starts increaseing  with consistent values >1
-                if ((k != flow_hourly_prepeak.index[-1]) and (k != flow_hourly_prepeak.index[0])
-                        and (Fevent_start_mag == flow_hourly_prepeak['flow'].min()) and (flow_hourly_prepeak['slope1'][k] > 1)
-                        and (flow_hourly_prepeak['slope1'][k+1] > 1)):
-                    Fevent_start = flow_hourly_prepeak['date'][k - 1]
-                    Fevent_start_mag = flow_hourly_prepeak['flow'][k - 1]
-                    break
 
-                # else look for when slope starts increasing more than 5% of (peak - minstartflow) - and only continue if start still min
-                elif ((flow_hourly_prepeak['slope1'][k] > (Fpeak_mag-flow_hourly_prepeak['flow'].min())*0.05)
-                      and (k != flow_hourly_prepeak.index[0]) and (Fevent_start_mag == flow_hourly_prepeak['flow'].min())):
-                    Fevent_start = flow_hourly_prepeak['date'][k-1]
-                    Fevent_start_mag = flow_hourly_prepeak['flow'][k-1]
-                    break
+            rise_5 = (Fpeak_mag - flow_hourly_prepeak['flow'].min()) * 0.05
+
+            if rise_5 < 1:
+                rise_allowed = rise_5
+                # then use rise_5
+            else:
+                rise_allowed = 1
+
+            for k in range(Fevent_start_min_index, flow_hourly_prepeak.index[-1] + 1):
+                if ((k != flow_hourly_prepeak.index[-1])
+                        and (k != flow_hourly_prepeak.index[0])
+                        and (Fevent_start_mag == flow_hourly_prepeak['flow'].min())
+                        and (flow_hourly_prepeak['slope1'][k] >= rise_allowed)):
+                        # and (flow_hourly_prepeak['slope1'][k + 1] >= rise_allowed)):
+                        Fevent_start = flow_hourly_prepeak['date'][k - 1]
+                        Fevent_start_mag = flow_hourly_prepeak['flow'][k - 1]
+                        print('start slope consistently > rise allowed', rise_allowed)
+                        break
+
+            #
+            # # then look through to find changes in slope
+            # # print(Fevent_start_min_index, flow_hourly_prepeak.index[-1]+1)
+            # for k in range(Fevent_start_min_index,flow_hourly_prepeak.index[-1]+1):
+            #     # else look for when slope starts increaseing  with consistent values >1
+            #     if ((k != flow_hourly_prepeak.index[-1]) and (k != flow_hourly_prepeak.index[0])
+            #             and (Fevent_start_mag == flow_hourly_prepeak['flow'].min()) and (flow_hourly_prepeak['slope1'][k] > 1)
+            #             and (flow_hourly_prepeak['slope1'][k+1] > 1)):
+            #         Fevent_start = flow_hourly_prepeak['date'][k - 1]
+            #         Fevent_start_mag = flow_hourly_prepeak['flow'][k - 1]
+            #         print('start slope consistently >1')
+            #         break
+            #
+            #     # else look for when slope starts increasing more than 5% of (peak - minstartflow) - and only continue if start still min
+            #     elif ((flow_hourly_prepeak['slope1'][k] > (Fpeak_mag-flow_hourly_prepeak['flow'].min())*0.05)
+            #           and (k < flow_hourly_prepeak.index[-1])
+            #           and (flow_hourly_prepeak['slope1'][k+1] > (Fpeak_mag-flow_hourly_prepeak['flow'].min())*0.05)
+            #           and (k != flow_hourly_prepeak.index[0])
+            #           and (Fevent_start_mag == flow_hourly_prepeak['flow'].min())):
+            #         Fevent_start = flow_hourly_prepeak['date'][k-1]
+            #         Fevent_start_mag = flow_hourly_prepeak['flow'][k-1]
+            #         print('start slope >5%')
+            #         break
 
                 # else if just a single hour rise at the end (super flashy) - and only continue if start still min
-                elif ((k == flow_hourly_prepeak.index[-1]) and (len(flow_hourly_prepeak) > 1)
+                elif ((k == flow_hourly_prepeak.index[-1])
+                      and (k != flow_hourly_prepeak.index[0])
+                      and (len(flow_hourly_prepeak) >= 1)
                       and (Fevent_start_mag == flow_hourly_prepeak['flow'].min())
-                      and (flow_hourly_prepeak['slope1'][k] > 1) and (flow_hourly_prepeak['slope1'][k-1] < 1)):
+                      and (flow_hourly_prepeak['slope1'][k] > 1)
+                      and (flow_hourly_prepeak['slope1'][k-1] < 1)):
                     Fevent_start = flow_hourly_prepeak['date'][k-1]
                     Fevent_start_mag = flow_hourly_prepeak['flow'][k-1]
+                    print('single hour only')
                     break
 
         print('Event start: ', Fevent_start, Fevent_start_mag)
@@ -774,7 +771,7 @@ def calculations(Fevent_end_all, Fevent_start_all, Fpeak_all, Fevent_start_mag_a
 def write_csv(workingPath,wys, storm_IDs_all, stormstart_all, stormend_all, precipmag_total_all, PeakInt_mag_all, PeakInt_all, Fevent_start_all, Fevent_start_mag_all,
           Fpeak_all, Fpeak_mag_all, Fevent_end_all, Fevent_end_mag_all, num_events, flowduration, timetopeak, timetorecession, rise,
               storm_start_timetopeak, storm_int_timetopeak, antecedent_precip_all, endflags, seasonflags):
-    with open('{}\\ExampleFiles\\DefaultOutputsFolder\\RREDI_Step2_3_output.csv'.format(workingPath), 'w', newline='') as f:
+    with open('{}\\workingfiles\\RREDI_Step2_3\\RREDI_Step2_3_output.csv'.format(workingPath), 'w', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(['WY'] + wys)
         writer.writerow(['YearlyEventNumber'] + num_events)
