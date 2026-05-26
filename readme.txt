@@ -7,29 +7,21 @@
 
 # November 2022 http://www.hydroshare.org/resource/797fe26dfefb4d658b8f8bc898b320de
 # Updated January 2024 - Additional operational details and streamline of input file names. Include DiurnalFlaggingFunction.py file.
-# Updated August 2025 - RREDI V2 release. RREDI code updated to identify better Step 3 runoff start and end using a large sample of watersheds ~250. Additional 
-  documentation (including this readme.txt) included and updated including descriptive figures. Example inputs and outputs from updated code included. 
+# Updated August 2025 - RREDI V2 release. RREDI code updated to identify better Step 3 runoff start and end using a large sample of watersheds ~250. Additional documentation (including this readme.txt) included and updated including descriptive figures. Example inputs and outputs from updated code included. 
   https://hydroshare.org/resource/c0b8d3aee3434df88adc1f495b3121f6/
 
 # Contact
 	Haley Canham - haley.canham@usu.edu
 	Belize Lane - belize.lane@usu.edu
 	
-# To automate the analysis of post-wildfire rainfall-runoff events across numerous storms and watersheds, the hydrologic time-series analysis Rainfall-Runoff 
- Event Detection and Information (RREDI) toolkit was developed. The RREDI algorithm first uses feature detection and signal processing of storm precipitation 
- and flow data to identify rainfall-runoff events (Step 1). Then each rainfall-runoff event is extracted using 15-minute flow and instantaneous precipitation data 
- and the timing and magnitude of the start, peak, and end of event is extracted (Step 2). These identifiers are then used to calculate a set of event attributes 
- including time to peak, response time, duration, volume, and percent rise (Step 3). Erroneous identified rainfall-runoff events are flagged and removed (Step 4).
- These attributes from the identified rainfall-runoff events can then be analyzed to answer research questions regarding variability in rainfall-runoff patterns within 
- and between watersheds. This algorithm utilizes the open-source Python.
+# To automate the analysis of post-wildfire rainfall-runoff events across numerous storms and watersheds, the hydrologic time-series analysis Rainfall-Runoff Event Detection and Information (RREDI) toolkit was developed. The RREDI algorithm first uses feature detection and signal processing of storm precipitation and flow data to identify rainfall-runoff events (Step 1). Then each rainfall-runoff event is extracted using 15-minute flow and instantaneous precipitation data and the timing and magnitude of the start, peak, and end of event is extracted (Step 2). These identifiers are then used to calculate a set of event attributes 
+including time to peak, response time, duration, volume, and percent rise (Step 3). Erroneous identified rainfall-runoff events are flagged and removed (Step 4). These attributes from the identified rainfall-runoff events can then be analyzed to answer research questions regarding variability in rainfall-runoff patterns within and between watersheds. This algorithm utilizes the open-source Python.
  
 # This resource is described in detail in:
-	Canham, H. A., Lane, B., Phillips, C. B., and Murphy, B. P. (2025). Leveraging a time-series event separation method to disentangle time-varying hydrologic 
-	 controls on streamflow- application to wildfire-affected catchments, Hydrologic Earth System Sciences, 29, 27-43, https://doi.org/10.5194/hess-29-27-2025.
+	Canham, H. A., Lane, B., Phillips, C. B., and Murphy, B. P. (2025). Leveraging a time-series event separation method to disentangle time-varying hydrologic controls on streamflow- application to wildfire-affected catchments, Hydrologic Earth System Sciences, 29, 27-43, https://doi.org/10.5194/hess-29-27-2025.
 	
 # This resource references:
-	Patterson, N. K., Lane, B., Sandoval-Solis, S., Pasternack, G. B., Yarnell, S. M., Qiu, Y. (2020). A hydrologic feature detection algorithm to quantify 
-	 seasonal components of flow regimes, Journal of Hydrology, 585, 124787, https://doi.org/10.1016/j.jhydrol.2020.124787.
+	Patterson, N. K., Lane, B., Sandoval-Solis, S., Pasternack, G. B., Yarnell, S. M., Qiu, Y. (2020). A hydrologic feature detection algorithm to quantify seasonal components of flow regimes, Journal of Hydrology, 585, 124787, https://doi.org/10.1016/j.jhydrol.2020.124787.
 
 # This resource supersedes: 
 	Canham, H., Lane, B. (2025). Rainfall-Runoff Event Detection and Identification (RREDI) toolkit, HydroShare, 
