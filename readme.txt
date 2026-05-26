@@ -1,6 +1,7 @@
 # Rainfall-Runoff Event Detection and Identification (RREDI) toolkit V2 - ReadMe.txt
 # Canham, H., Lane, B. (2025). Rainfall-Runoff Event Detection and Identification (RREDI) toolkit V2, HydroShare, 
   https://hydroshare.org/resource/c0b8d3aee3434df88adc1f495b3121f6/
+# This Github branch is consistent version as HydroShare RREDI toolkit V2
 
 # Utah Water Research Laboratory
 # Utah State University
