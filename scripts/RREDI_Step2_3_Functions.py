@@ -338,9 +338,9 @@ def event_attribution(j, i, workingPath,pair_Pindex, PStormID, precipmag_total_a
     stormIDs_all.append(Id)
 
     # #Read storm ID intensity and magnitude file
-    intensitypath = '{}\\workingfiles\\StormGenerator\\Intensity\\intensity_{}.csv'.format(workingPath, Id)
+    intensitypath = '{}\\workingfiles\\StormGenerator\\Storms\\Intensity\\intensity_{}.csv'.format(workingPath, Id)
     intensitycsv = pd.read_csv(intensitypath)
-    precipmagpath = '{}\\workingfiles\\StormGenerator\\Magnitude\\magnitude_{}.csv'.format(workingPath, Id)
+    precipmagpath = '{}\\workingfiles\\StormGenerator\\Storms\\Magnitude\\magnitude_{}.csv'.format(workingPath, Id)
     precipmagcsv = pd.read_csv(precipmagpath)
 
     ## get storm total magnitude

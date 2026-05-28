@@ -90,6 +90,12 @@ storms['Start'] = storm_dates_start
 storms['End'] = storm_dates_end
 
 ## write PreProcessing .csv files
+preproc_dir = os.path.join(workingPath, 'workingfiles', 'RREDI_PreProcessing')
+os.makedirs(preproc_dir, exist_ok=True)
 Q_daily.to_csv('{}\\workingfiles\\RREDI_PreProcessing\\Q_D_PreProcessed.csv'.format(workingPath), index = False)
 Q_instant.to_csv('{}\\workingfiles\\RREDI_PreProcessing\\Q_I_PreProcessed.csv'.format(workingPath), index = False)
 storms.to_csv('{}\\workingfiles\\RREDI_PreProcessing\\P_storms_PreProcessed.csv'.format(workingPath), index = False)
+
+# also writing pre-processing to step 1 input folders
+Q_daily.to_csv('{}/scripts/RREDI_Step1/user_input_files/Q_D_PreProcessed.csv'.format(workingPath), index = False)
+storms.to_csv('{}/scripts/RREDI_Step1/user_input_files/Precipitation/P_storms_PreProcessed.csv'.format(workingPath), index = False)
