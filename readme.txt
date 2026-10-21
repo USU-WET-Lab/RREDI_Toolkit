@@ -112,7 +112,7 @@ including time to peak, response time, duration, volume, and percent rise (Step 
 	
 	RREDI toolkit
 	RREDI Step 1: Event Pair Identification
-		Follow the steps to use the code within the RREDI_Step1 folder. This code structure is adapted from Patterson et al. (2020).
+		Follow the steps to use the code within the RREDI_Step1 folder. This code structure is adapted from Patterson et al. (2020). NOTE: RREDI_Step1 must be opened in its own project file structure (i.e., RREDI_Step1 is home directory) for file paths to work correctly.
 		1. Copy and paste Q_D_PreProcessed.csv into RREDI_Step1//user_input_files
 		2. Copy and paste P_storms_PreProcessed.csv into RREDI_Step1//user_input_files//Precipitation
 		3. Run main.py. When prompted:
