@@ -7,6 +7,7 @@
 # libraries
 import pandas as pd
 from datetime import datetime, timedelta
+import numpy as np
 from RREDI_Step4_Functions import DiurnalFlag
 import os
 import shutil
@@ -42,12 +43,11 @@ events['StormStartDate'] = pd.to_datetime(events['StormStartDate'])
 
 
 # add in an actual wy column
-events['wy_actual'] = events['StormStartDate'].dt.year
+events['yr'] = events['StormStartDate'].dt.year
 events['storm_start_month'] = events['StormStartDate'].dt.month
-for k in range(0,len(events.index)):
-    if events['storm_start_month'][k] >= 10:
-        events['wy_actual'][k] = events['wy_actual'][k] + 1
+events['wy_actual'] = np.where(events['storm_start_month'] >= 10, events['yr'] + 1, events['yr'])
 events.drop('storm_start_month', axis=1, inplace=True)
+events.drop('yr', axis=1, inplace=True)
 
 
 # file management
